@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="navbar.css">
 <style>
 :root {
   --navy: #0f1a2e;
@@ -535,6 +536,21 @@ footer .fine {
 </head>
 <body>
 
+<!-- ====== NAVBAR ====== -->
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="#" class="nav-brand">The Quiet <em>Forces</em></a>
+    <button class="nav-toggle" aria-label="Toggle menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <ul class="nav-links">
+      <li><a href="#forces">The Forces</a></li>
+      <li><a href="#inside">Inside</a></li>
+      <li><a href="#who">Who It's For</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#buy" class="nav-cta">Get the Workbook</a></li>
+    </ul>
+  </div>
+</nav>
+
 <!-- ====== HERO ====== -->
 <section class="hero">
   <div class="hero-inner">
@@ -569,7 +585,7 @@ footer .fine {
 </section>
 
 <!-- ====== SEVEN FORCES ====== -->
-<section class="forces">
+<section class="forces" id="forces">
   <div class="container">
     <div class="section-kicker" style="text-align: center;">The Seven Forces</div>
     <h2 class="section-title" style="text-align: center;">What you'll learn to name.</h2>
@@ -614,7 +630,7 @@ footer .fine {
 </section>
 
 <!-- ====== WHAT'S INSIDE ====== -->
-<section class="inside">
+<section class="inside" id="inside">
   <div class="container">
     <div class="section-kicker" style="text-align: center;">What's Inside</div>
     <h2 class="section-title" style="text-align: center;">A real workbook. <em>Not a recycled blog post.</em></h2>
@@ -665,7 +681,7 @@ footer .fine {
 </section>
 
 <!-- ====== WHO FOR ====== -->
-<section class="who">
+<section class="who" id="who">
   <div class="container">
     <div class="section-kicker" style="text-align: center;">Is This for You?</div>
     <h2 class="section-title" style="text-align: center;">Let's be honest with each other.</h2>
@@ -695,7 +711,7 @@ footer .fine {
 </section>
 
 <!-- ====== FAQ ====== -->
-<section class="faq">
+<section class="faq" id="faq">
   <div class="narrow">
     <div class="section-kicker" style="text-align: center;">Questions</div>
     <h2 class="section-title" style="text-align: center;">The short answers.</h2>
