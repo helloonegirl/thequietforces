@@ -511,6 +511,90 @@ footer .fine {
   color: #6a7890;
 }
 
+/* ------ VOLUMES GRID ------ */
+.volumes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 1000px;
+  margin: 48px auto 0;
+}
+@media (max-width: 900px) {
+  .volumes-grid { grid-template-columns: 1fr; max-width: 460px; }
+}
+.volume-card {
+  background: var(--cream);
+  color: var(--text);
+  padding: 36px 28px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  border-top: 3px solid var(--gold-bright);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.volume-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 50px rgba(15,26,46,0.25);
+}
+.volume-card .volume-num {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold-dark);
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.volume-card .volume-title {
+  font-family: 'Fraunces', serif;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+.volume-card .volume-title em {
+  font-style: italic;
+  color: var(--gold-dark);
+}
+.volume-card .volume-desc {
+  font-size: 14.5px;
+  color: var(--text-mid);
+  line-height: 1.6;
+  margin-bottom: 24px;
+  flex-grow: 1;
+}
+.volume-card .volume-price {
+  font-family: 'Fraunces', serif;
+  font-size: 38px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+.volume-card .volume-btn {
+  display: block;
+  width: 100%;
+  background: var(--navy);
+  color: var(--text-cream);
+  padding: 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  text-align: center;
+  border-radius: 2px;
+  transition: all 0.2s ease;
+}
+.volume-card .volume-btn:hover {
+  background: #1a2b48;
+  transform: translateY(-1px);
+}
+
 /* FAQ */
 .faq { background: var(--cream); }
 .faq-list { max-width: 780px; margin: 48px auto 0; }
@@ -747,31 +831,40 @@ footer .fine {
 <!-- ====== FINAL CTA ====== -->
 <section class="final" id="buy">
   <div class="container">
-    <h2>Start naming the forces <em>that are running the show.</em></h2>
-    <p class="lead">The setup is an afternoon. The change takes a month. The vocabulary lasts a lifetime.</p>
-    <div class="price-card">
-      <div class="product-name">The Quiet Forces</div>
-      <div class="product-sub">The full 91-page workbook, the editable PowerPoint, the 30-day plan, the reference cards.</div>
-      <div class="price-line">
-        <div class="now">$14.99</div>
-        <div class="was">$19.99</div>
-        <div class="badge">Launch</div>
+    <h2>Three volumes. <em>Three quiet shifts.</em></h2>
+    <p class="lead">Each volume stands on its own — pick where to start, or collect the full set.</p>
+
+    <div class="volumes-grid">
+      <div class="volume-card">
+        <div class="volume-num">Volume I</div>
+        <div class="volume-title">The Quiet <em>Forces</em></div>
+        <p class="volume-desc">The first chapter in the series — the foundational forces that shape how you see yourself and the small moves that begin to change them.</p>
+        <div class="volume-price">$9.99</div>
+        <!-- REPLACE WITH YOUR PAYHIP LINK FOR VOLUME I -->
+        <a href="https://payhip.com/b/2763726372637263" class="volume-btn">Get Volume I →</a>
       </div>
-      <ul class="includes">
-        <li>91-page designed PDF</li>
-        <li>Editable PowerPoint version</li>
-        <li>7 printable reference cards</li>
-        <li>30-day integration plan</li>
-        <li>Instant download after checkout</li>
-        <li>Lifetime access — any updates are free</li>
-      </ul>
-      <!-- REPLACE THE HREF BELOW WITH YOUR PAYHIP PRODUCT LINK -->
-      <a href="https://payhip.com/b/2763726372637263" class="buy-btn">
-        Get Instant Access →
-      </a>
-      <div class="trust">
-        Secure checkout via Stripe. 100% refund if not for you.
+
+      <div class="volume-card">
+        <div class="volume-num">Volume II</div>
+        <div class="volume-title">The Quiet <em>Forces</em></div>
+        <p class="volume-desc">The middle chapter — the forces that quietly shape your relationships, your habits, and the way you decide what's worth chasing.</p>
+        <div class="volume-price">$9.99</div>
+        <!-- REPLACE WITH YOUR PAYHIP LINK FOR VOLUME II -->
+        <a href="https://payhip.com/b/2763726372637263" class="volume-btn">Get Volume II →</a>
       </div>
+
+      <div class="volume-card">
+        <div class="volume-num">Volume III</div>
+        <div class="volume-title">The Quiet <em>Forces</em></div>
+        <p class="volume-desc">The final chapter — the forces that govern time, attention, and meaning, and the 30-day plan that ties the whole series together.</p>
+        <div class="volume-price">$9.99</div>
+        <!-- REPLACE WITH YOUR PAYHIP LINK FOR VOLUME III -->
+        <a href="https://payhip.com/b/2763726372637263" class="volume-btn">Get Volume III →</a>
+      </div>
+    </div>
+
+    <div class="trust" style="margin-top: 32px; color: #c9bfa0;">
+      Secure checkout via Stripe. Instant download. 100% refund if not for you.
     </div>
   </div>
 </section>
