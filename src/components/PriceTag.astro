@@ -1,0 +1,69 @@
+---
+import { launchPromo, applyPromo, formatPrice } from '../data/catalog';
+
+interface Props {
+  price: number;     // base USD price
+  size?: 'sm' | 'md' | 'lg';
+  showPill?: boolean;
+}
+
+const { price, size = 'md', showPill = true } = Astro.props;
+
+const isPromo = launchPromo.active;
+const finalPrice = isPromo ? applyPromo(price) : price;
+
+const sizeClass = {
+  sm: 'price-sm',
+  md: 'price-md',
+  lg: 'price-lg',
+}[size];
+---
+
+<div class={`price-tag ${sizeClass}`}>
+  <span class="price-now">{formatPrice(finalPrice)}</span>
+  {isPromo && (
+    <span class="price-was">{formatPrice(price)}</span>
+  )}
+  {isPromo && showPill && (
+    <span class="price-pill">{launchPromo.label}</span>
+  )}
+</div>
+
+<style>
+  .price-tag {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .price-now {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1;
+  }
+  .price-was {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-dim);
+    text-decoration: line-through;
+  }
+  .price-pill {
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    border: 1px solid var(--gold);
+    border-radius: 999px;
+    padding: 4px 10px;
+    line-height: 1;
+  }
+
+  .price-sm .price-now { font-size: 22px; }
+  .price-sm .price-was { font-size: 14px; }
+  .price-md .price-now { font-size: 32px; }
+  .price-md .price-was { font-size: 16px; }
+  .price-lg .price-now { font-size: 48px; }
+  .price-lg .price-was { font-size: 20px; }
+</style>

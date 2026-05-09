@@ -1,0 +1,139 @@
+---
+import { newsletter } from '../data/catalog';
+
+interface Props {
+  variant?: 'inline' | 'box';     // inline = thin centered form; box = soft cream container
+  headline?: string;
+  sublabel?: string;
+  ctaLabel?: string;
+}
+
+const {
+  variant = 'box',
+  headline = 'Start free. Five forces, one guide.',
+  sublabel = 'A 15-page PDF in your inbox in under a minute.',
+  ctaLabel = 'Send me the guide →',
+} = Astro.props;
+
+const isLive = newsletter.enabled && newsletter.actionUrl;
+---
+
+<form
+  class={`optin optin-${variant}`}
+  action={isLive ? newsletter.actionUrl : undefined}
+  method="post"
+  novalidate={!isLive}
+  data-newsletter-active={isLive ? 'true' : 'false'}
+>
+  <div class="optin-text">
+    <p class="eyebrow">Free Starter Guide</p>
+    <h3 class="optin-headline font-serif">{headline}</h3>
+    <p class="optin-sub">{sublabel}</p>
+  </div>
+
+  <div class="optin-row">
+    <input
+      type="email"
+      name="fields[email]"
+      placeholder="you@example.com"
+      required
+      class="optin-input"
+      aria-label="Your email address"
+    />
+    <button type="submit" class="optin-btn">{ctaLabel}</button>
+  </div>
+
+  <p class="optin-fine">
+    No spam. One welcome sequence over two weeks, then one short email on Fridays. Unsubscribe in one click.
+  </p>
+
+  {!isLive && (
+    <p class="optin-todo">
+      Form is in placeholder mode. Add your MailerLite action URL in <code>src/data/products.json</code> → <code>newsletter.actionUrl</code> and set <code>enabled: true</code>.
+    </p>
+  )}
+</form>
+
+<style>
+  .optin { display: block; }
+  .optin-box {
+    background: #f7eedb;
+    border: 1px solid var(--border);
+    padding: 40px 36px;
+    max-width: 620px;
+    margin: 0 auto;
+  }
+  .optin-inline {
+    background: transparent;
+    padding: 0;
+    max-width: 520px;
+  }
+  .optin-text { text-align: left; margin-bottom: 22px; }
+  .optin-headline {
+    font-size: 26px;
+    font-weight: 400;
+    margin: 10px 0 8px;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+  .optin-sub {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--text-mid);
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .optin-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .optin-input {
+    flex: 1 1 220px;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    background: var(--cream);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    border-radius: 0;
+    outline: none;
+    transition: border-color 200ms ease;
+  }
+  .optin-input:focus { border-color: var(--gold-dark); }
+  .optin-btn {
+    padding: 14px 22px;
+    border: 1px solid var(--gold);
+    background: var(--gold);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 0;
+    transition: background 200ms ease;
+  }
+  .optin-btn:hover { background: #f5c878; }
+  .optin-fine {
+    margin-top: 14px;
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+  .optin-todo {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--border);
+    font-size: 11px;
+    color: var(--text-dim);
+    font-family: 'Inter', sans-serif;
+  }
+  .optin-todo code {
+    background: rgba(166,138,62,0.1);
+    padding: 1px 5px;
+    font-size: 11px;
+    color: var(--gold-dark);
+  }
+</style>

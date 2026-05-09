@@ -1,17 +1,21 @@
 ---
 import '../styles/global.css';
 import { site } from '../data/catalog';
+import SiteNav from '../components/SiteNav.astro';
+import Footer from '../components/Footer.astro';
 
 interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
+  bare?: boolean;     // hide nav + footer (rare — used for landing pages later)
 }
 
 const {
   title = site.brandName,
   description = site.tagline,
   ogImage,
+  bare = false,
 } = Astro.props;
 
 const fullTitle = title === site.brandName ? title : `${title} · ${site.brandName}`;
@@ -44,6 +48,8 @@ const canonical = `${site.domain}${Astro.url.pathname.replace(/^\/thequietforces
     <slot name="head" />
   </head>
   <body>
+    {!bare && <SiteNav />}
     <slot />
+    {!bare && <Footer />}
   </body>
 </html>

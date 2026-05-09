@@ -14,6 +14,14 @@
     "endsOn": "2026-06-30"
   },
 
+  "newsletter": {
+    "_README": "When you have a MailerLite form, paste its action URL here and set 'enabled' to true. Form will start working immediately on next deploy.",
+    "enabled": false,
+    "provider": "MailerLite",
+    "actionUrl": null,
+    "successMessage": "Check your inbox — the guide is on its way."
+  },
+
   "products": [
     {
       "slug": "starter-guide",

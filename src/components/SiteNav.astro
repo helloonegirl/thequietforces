@@ -1,0 +1,65 @@
+---
+import { site } from '../data/catalog';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const links = [
+  { href: `${base}/volume-one`,    label: 'Volume I' },
+  { href: `${base}/volume-two`,    label: 'Volume II' },
+  { href: `${base}/volume-three`,  label: 'Volume III' },
+  { href: `${base}/the-quiet-work`, label: 'The Quiet Work' },
+  { href: `${base}/bundles`,       label: 'Bundles' },
+  { href: `${base}/about`,         label: 'About' },
+];
+---
+
+<header class="site-nav">
+  <div class="site-nav-inner">
+    <a href={`${base}/`} class="site-brand">
+      <span class="font-serif text-lg tracking-tightish text-ink">{site.brandName}</span>
+    </a>
+    <nav class="site-links" aria-label="Primary">
+      {links.map(l => (
+        <a href={l.href} class="site-link">{l.label}</a>
+      ))}
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-nav {
+    border-bottom: 1px solid var(--border);
+    background: var(--cream);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: blur(6px);
+  }
+  .site-nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 18px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+  }
+  .site-brand { text-decoration: none; }
+  .site-links {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+  }
+  .site-link {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-mid);
+    text-decoration: none;
+    transition: color 200ms ease;
+  }
+  .site-link:hover { color: var(--gold-dark); }
+  @media (max-width: 820px) {
+    .site-nav-inner { padding: 14px 20px; gap: 16px; }
+    .site-links { display: none; }
+  }
+</style>

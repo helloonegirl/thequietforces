@@ -1,0 +1,86 @@
+---
+// BookCover — renders a book either as a real cover image OR as an
+// editorial gradient placeholder. The placeholder is intentionally
+// designed to feel like a fifth artifact in the brand family.
+
+import type { Product } from '../data/catalog';
+
+interface Props {
+  product: Product;
+  width?: number;     // px; default 180. Height = width * 1.5
+  rotate?: number;    // deg; small tilt for hand-placed feel
+  className?: string;
+}
+
+const { product, width = 180, rotate = 0, className = '' } = Astro.props;
+const height = Math.round(width * 1.5);
+const [from, to] = product.accentGradient;
+
+// Inline transforms so we can vary per-instance without classes.
+const transform = rotate ? `transform: rotate(${rotate}deg);` : '';
+const sizing = `width:${width}px;height:${height}px;`;
+const gradient = `background: linear-gradient(155deg, ${from} 0%, ${to} 100%);`;
+---
+
+<div class={`bookcover-wrap ${className}`} style={`width:${width}px;${transform}`}>
+  {product.coverImage ? (
+    <img
+      src={product.coverImage}
+      alt={`${product.volumeLabel} — ${product.title}`}
+      width={width}
+      height={height}
+      style={sizing}
+      class="block bookcover-img"
+      loading="lazy"
+    />
+  ) : (
+    <div
+      style={`${sizing}${gradient}`}
+      class="bookcover-placeholder relative flex flex-col justify-between p-3 text-white overflow-hidden"
+      role="img"
+      aria-label={`${product.volumeLabel} — ${product.title}`}
+    >
+      <div class="font-sans uppercase tracking-widest2 opacity-70" style={`font-size:${Math.max(7, width / 22)}px;`}>
+        {product.volumeLabel}
+      </div>
+      <div class="font-serif italic leading-tight" style={`font-size:${Math.max(11, width / 13)}px;`}>
+        {product.title}
+      </div>
+      <div class="font-sans uppercase tracking-widest2 opacity-60" style={`font-size:${Math.max(7, width / 22)}px;`}>
+        {product.theme ?? 'Free Guide'}
+      </div>
+      <span class="bookcover-spine"></span>
+      <span class="bookcover-foil"></span>
+    </div>
+  )}
+</div>
+
+<style>
+  .bookcover-wrap {
+    display: inline-block;
+    position: relative;
+  }
+  .bookcover-img,
+  .bookcover-placeholder {
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.06) inset,
+      0 24px 30px -22px rgba(15,15,15,0.45);
+  }
+  .bookcover-spine {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+    background: linear-gradient(to right, rgba(0,0,0,0.35), transparent);
+    pointer-events: none;
+  }
+  .bookcover-foil {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 16%;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.55;
+    pointer-events: none;
+  }
+</style>

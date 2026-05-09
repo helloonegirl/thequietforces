@@ -1,12 +1,493 @@
 ---
 import Base from '../layouts/Base.astro';
-import PhaseOneShell from '../components/PhaseOneShell.astro';
-import { site } from '../data/catalog';
+import BookShelf from '../components/BookShelf.astro';
+import VolumeCard from '../components/VolumeCard.astro';
+import EmailOptIn from '../components/EmailOptIn.astro';
+import PriceTag from '../components/PriceTag.astro';
+import {
+  site,
+  products,
+  getBundle,
+  bundleIndividualTotal,
+  formatPrice,
+  applyPromo,
+  launchPromo,
+} from '../data/catalog';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+// Four book volumes for the grid (exclude the free starter)
+const fourVolumes = products.filter(p => p.slug !== 'starter-guide');
+
+// Flagship bundle for the dedicated section
+const kit = getBundle('complete-change-kit');
+const kitIndividualTotal = bundleIndividualTotal(kit);
+const kitFinal = launchPromo.active ? applyPromo(kit.bundlePrice) : kit.bundlePrice;
 ---
+
 <Base title={site.brandName} description={site.tagline}>
-  <PhaseOneShell
-    pageLabel="Homepage"
-    headline="Seventeen forces shape a life."
-    blurb="A four-book project on the psychological forces quietly running most lives — and the practice of taking the wheel back."
-  />
+
+  {/* ═══════════ HERO ═══════════ */}
+  <section class="hero">
+    <div class="hero-grid">
+      <div class="hero-text">
+        <p class="eyebrow">The Quiet Forces</p>
+        <h1 class="hero-h1">
+          Seventeen forces<br />
+          <em class="hero-shape">shape</em> a life.
+        </h1>
+        <p class="hero-sub">
+          A four-book project on the psychological forces quietly running most lives — and the practice of taking the wheel back.
+        </p>
+        <div class="hero-cta-row">
+          <a href={`${base}/starter-guide`} class="pill-cta">
+            Start with the free guide <span aria-hidden="true">→</span>
+          </a>
+          <a href={`${base}/bundles`} class="hero-secondary">Or browse the books</a>
+        </div>
+        <p class="hero-micro">Free 15-page PDF. No spam.</p>
+      </div>
+      <div class="hero-shelf">
+        <BookShelf />
+      </div>
+    </div>
+  </section>
+
+  {/* ═══════════ THE PROMISE ═══════════ */}
+  <section class="promise">
+    <div class="container-prose promise-inner">
+      <p>
+        Most of the forces that shape a life never announce themselves. They work quietly, in the background, and most people never learn to name them — which means they never learn to push back.
+      </p>
+      <p>
+        The Quiet Forces is a four-book project that names them. Seventeen psychological and philosophical forces, each with its origin story, its research, its examples, and a counter-move you can try this week.
+      </p>
+      <p>
+        It is not a self-help library. It is a working notebook for people who already read a little psychology and are tired of the same five ideas repackaged.
+      </p>
+      <div class="promise-rule"></div>
+    </div>
+  </section>
+
+  {/* ═══════════ THE FOUR VOLUMES ═══════════ */}
+  <section class="volumes">
+    <div class="container-page">
+      <div class="section-head">
+        <p class="eyebrow">The Books</p>
+        <h2 class="section-h2">Four volumes. <em>Seventeen forces.</em></h2>
+      </div>
+      <div class="volumes-grid">
+        {fourVolumes.map(p => <VolumeCard product={p} />)}
+      </div>
+    </div>
+  </section>
+
+  {/* ═══════════ THE COMPLETE CHANGE KIT ═══════════ */}
+  <section class="kit">
+    <div class="container-page kit-inner">
+      <div class="kit-text">
+        <p class="eyebrow">The Complete Change Kit</p>
+        <h2 class="kit-h2">All four books.<br /><em>Eighty-four days.</em><br />One coherent project.</h2>
+        <p class="kit-sub">
+          The whole project at once — the trilogy plus the twelve-week companion workbook — at the lowest price the set is offered.
+        </p>
+        <div class="kit-price">
+          <span class="kit-now">{formatPrice(kitFinal)}</span>
+          <span class="kit-was">{formatPrice(kitIndividualTotal)} individually</span>
+        </div>
+        <a href={kit.payhipUrl ?? `${base}/bundles`} class="kit-cta">
+          Get the kit <span aria-hidden="true">→</span>
+        </a>
+        {!kit.payhipUrl && (
+          <p class="kit-todo">
+            Add the Payhip URL in <code>products.json → bundles → complete-change-kit → payhipUrl</code> to wire this button up.
+          </p>
+        )}
+      </div>
+      <div class="kit-shelf">
+        {fourVolumes.map((p, i) => (
+          <div class="kit-book" style={`z-index:${10 - i};`}>
+            <div class="kit-book-rotate">
+              <div class="kit-book-inner" style={`background: linear-gradient(155deg, ${p.accentGradient[0]}, ${p.accentGradient[1]});`}>
+                <span class="kit-book-label">{p.volumeLabel}</span>
+                <span class="kit-book-title">{p.title}</span>
+                <span class="kit-book-theme">{p.theme}</span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* ═══════════ STARTER GUIDE OPT-IN ═══════════ */}
+  <section class="starter-opt">
+    <div class="container-page">
+      <EmailOptIn variant="box" />
+    </div>
+  </section>
+
+  {/* ═══════════ WHO IT'S FOR ═══════════ */}
+  <section class="who">
+    <div class="container-page">
+      <div class="section-head section-head-center">
+        <p class="eyebrow">Is This for You?</p>
+        <h2 class="section-h2">Let's be honest with each other.</h2>
+      </div>
+      <div class="who-grid">
+        <div class="who-box">
+          <h3 class="who-h3">This is for you if</h3>
+          <ul>
+            <li>You already read a little psychology and feel most of it is the same five ideas repackaged.</li>
+            <li>You want substance over hype — real research, real frameworks, real exercises.</li>
+            <li>You're willing to pick up a pen and actually do the worksheets.</li>
+            <li>You prefer a book you'll finish to one you'll buy and abandon.</li>
+            <li>You're looking for a thoughtful gift for someone who thinks.</li>
+          </ul>
+        </div>
+        <div class="who-box who-box-no">
+          <h3 class="who-h3">This is not for you if</h3>
+          <ul>
+            <li>You're looking for "ten quick productivity hacks."</li>
+            <li>You want to feel good without doing any work.</li>
+            <li>You won't pick up a pen — the exercises are the product.</li>
+            <li>You're hoping for a read-in-one-sitting motivational book. This takes longer and lands harder.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
 </Base>
+
+<style>
+  /* ───────── HERO ───────── */
+  .hero {
+    min-height: 100vh;
+    padding: 80px 32px 100px;
+    display: flex;
+    align-items: center;
+  }
+  .hero-grid {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .hero-text { max-width: 580px; }
+  .hero-h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(48px, 7vw, 92px);
+    line-height: 1.04;
+    letter-spacing: -0.015em;
+    margin: 24px 0 28px;
+    color: var(--text);
+  }
+  .hero-shape {
+    font-style: italic;
+    color: var(--gold-dark);
+  }
+  .hero-sub {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: clamp(18px, 1.7vw, 22px);
+    line-height: 1.55;
+    color: var(--text-mid);
+    max-width: 480px;
+    margin-bottom: 36px;
+  }
+  .hero-cta-row {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .hero-secondary {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-mid);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 4px;
+    transition: color 200ms ease, border-color 200ms ease;
+  }
+  .hero-secondary:hover {
+    color: var(--gold-dark);
+    border-color: var(--gold-dark);
+  }
+  .hero-micro {
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+    margin-top: 16px;
+  }
+  .hero-shelf {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  @media (max-width: 900px) {
+    .hero { min-height: auto; padding: 56px 20px 64px; }
+    .hero-grid { grid-template-columns: 1fr; gap: 24px; }
+    .hero-shelf { order: -1; margin-bottom: 24px; }
+  }
+
+  /* ───────── PROMISE ───────── */
+  .promise {
+    padding: 96px 32px;
+  }
+  .promise-inner p {
+    font-family: 'Fraunces', serif;
+    font-size: 21px;
+    line-height: 1.7;
+    color: var(--text-mid);
+    margin-bottom: 24px;
+  }
+  .promise-inner p:first-of-type {
+    color: var(--text);
+    font-size: 24px;
+    line-height: 1.55;
+  }
+  .promise-rule {
+    width: 64px;
+    height: 1px;
+    background: var(--gold-dark);
+    margin: 56px auto 0;
+  }
+
+  /* ───────── SECTION HEADS ───────── */
+  .section-head {
+    margin-bottom: 56px;
+    max-width: 700px;
+  }
+  .section-head-center {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+  .section-h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(32px, 4vw, 48px);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    margin-top: 14px;
+  }
+  .section-h2 em {
+    font-style: italic;
+    color: var(--gold-dark);
+  }
+
+  /* ───────── VOLUMES GRID ───────── */
+  .volumes {
+    padding: 64px 32px 96px;
+  }
+  .volumes-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+  }
+  @media (max-width: 760px) {
+    .volumes { padding: 40px 20px 64px; }
+    .volumes-grid { grid-template-columns: 1fr; gap: 20px; }
+  }
+
+  /* ───────── COMPLETE CHANGE KIT ───────── */
+  .kit {
+    background: #f7eedb;
+    padding: 110px 32px;
+    margin: 64px 0;
+  }
+  .kit-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .kit-h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(32px, 4vw, 56px);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    margin: 18px 0 24px;
+    color: var(--text);
+  }
+  .kit-h2 em { font-style: italic; color: var(--gold-dark); }
+  .kit-sub {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--text-mid);
+    max-width: 460px;
+    margin-bottom: 32px;
+  }
+  .kit-price {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+  }
+  .kit-now {
+    font-family: 'Fraunces', serif;
+    font-size: 56px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1;
+  }
+  .kit-was {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--text-dim);
+  }
+  .kit-was::before {
+    content: "";
+    display: inline-block;
+    width: 36px;
+    height: 1px;
+    background: var(--text-dim);
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+  .kit-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--text);
+    color: var(--cream);
+    padding: 18px 36px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 200ms ease, transform 200ms ease;
+  }
+  .kit-cta:hover { background: #1a1a1a; transform: translateY(-1px); }
+  .kit-todo {
+    margin-top: 16px;
+    font-size: 11px;
+    color: var(--text-dim);
+    font-family: 'Inter', sans-serif;
+    max-width: 420px;
+  }
+  .kit-todo code {
+    background: rgba(166,138,62,0.12);
+    padding: 1px 5px;
+    color: var(--gold-dark);
+    font-size: 11px;
+  }
+
+  .kit-shelf {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 12px;
+    perspective: 1000px;
+  }
+  .kit-book {
+    width: 110px;
+    height: 165px;
+    flex-shrink: 0;
+  }
+  .kit-book-rotate {
+    width: 100%;
+    height: 100%;
+    transform: rotateY(0deg);
+  }
+  .kit-book-inner {
+    width: 100%;
+    height: 100%;
+    padding: 14px 10px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 28px 30px -22px rgba(15,15,15,0.4);
+    position: relative;
+  }
+  .kit-book-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 7px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+  .kit-book-title {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 13px;
+    line-height: 1.15;
+  }
+  .kit-book-theme {
+    font-family: 'Inter', sans-serif;
+    font-size: 7px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+  @media (max-width: 900px) {
+    .kit { padding: 72px 20px; }
+    .kit-inner { grid-template-columns: 1fr; gap: 48px; }
+    .kit-shelf { order: -1; }
+    .kit-book { width: 80px; height: 120px; }
+  }
+
+  /* ───────── STARTER OPT ───────── */
+  .starter-opt {
+    padding: 64px 32px 32px;
+  }
+
+  /* ───────── WHO ───────── */
+  .who {
+    padding: 96px 32px;
+  }
+  .who-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+  .who-box {
+    background: var(--cream);
+    padding: 48px 40px;
+    border-top: 2px solid var(--gold-bright);
+  }
+  .who-box-no { border-top-color: var(--text-dim); }
+  .who-h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    font-weight: 400;
+    margin-bottom: 24px;
+    letter-spacing: -0.01em;
+  }
+  .who-box ul { list-style: none; padding: 0; margin: 0; }
+  .who-box li {
+    padding: 10px 0 10px 28px;
+    position: relative;
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--text-mid);
+  }
+  .who-box li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--gold-dark);
+    font-weight: 600;
+  }
+  @media (max-width: 700px) {
+    .who { padding: 64px 20px; }
+    .who-grid { grid-template-columns: 1fr; gap: 24px; }
+    .who-box { padding: 36px 28px; }
+  }
+</style>

@@ -1,13 +1,229 @@
 ---
 import Base from '../layouts/Base.astro';
-import PhaseOneShell from '../components/PhaseOneShell.astro';
-import { getProduct } from '../data/catalog';
-const p = getProduct('starter-guide');
+import BookCover from '../components/BookCover.astro';
+import EmailOptIn from '../components/EmailOptIn.astro';
+import { getProduct, products } from '../data/catalog';
+
+const guide = getProduct('starter-guide');
+const fourVolumes = products.filter(p => p.slug !== 'starter-guide');
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
-<Base title={p.title} description={p.metaDescription}>
-  <PhaseOneShell
-    pageLabel="The Starter Guide"
-    headline="Five Quiet Forces That Shape Your Life."
-    blurb="A free 15-page guide. Five ideas that have been running your life without your permission — and one specific thing to do about each, this week."
-  />
+
+<Base title={guide.title} description={guide.metaDescription}>
+
+  {/* ═══════════ HEADER + CAPTURE ═══════════ */}
+  <section class="sg-hero">
+    <div class="sg-grid">
+      <div class="sg-text">
+        <p class="eyebrow">Free Starter Guide</p>
+        <h1 class="sg-h1">
+          Five Quiet Forces<br />
+          <em>that shape</em><br />
+          your life.
+        </h1>
+        <p class="sg-sub">
+          A free 15-page guide. Five ideas that have been running your life without your permission — and one specific thing to do about each, this week.
+        </p>
+        <div class="sg-form">
+          <EmailOptIn
+            variant="inline"
+            headline="Start free. Five forces, one guide."
+            sublabel="A 15-page PDF in your inbox in under a minute."
+            ctaLabel="Send me the guide →"
+          />
+        </div>
+      </div>
+      <div class="sg-cover">
+        <BookCover product={guide} width={260} />
+      </div>
+    </div>
+  </section>
+
+  {/* ═══════════ WHAT'S INSIDE ═══════════ */}
+  <section class="sg-inside">
+    <div class="container-prose">
+      <p class="eyebrow">What's Inside</p>
+      <h2 class="sg-h2">Five forces. <em>One sitting.</em></h2>
+      <p class="sg-lede">
+        Each chapter is a single page. The force is named, the research is summarised, and one specific exercise is given for the week ahead. The whole guide takes thirty minutes.
+      </p>
+      <ol class="sg-forces">
+        {guide.forces.map((f, i) => (
+          <li>
+            <span class="sg-num">{['I','II','III','IV','V'][i]}</span>
+            <div>
+              <h3 class="sg-force-name">{f.name}</h3>
+              <p class="sg-force-tag">{f.tagline}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  {/* ═══════════ WHAT COMES AFTER ═══════════ */}
+  <section class="sg-after">
+    <div class="container-page">
+      <div class="sg-after-head">
+        <p class="eyebrow">After the Guide</p>
+        <h2 class="sg-h2 sg-h2-center">If the guide lands, the books go deeper.</h2>
+        <p class="sg-after-sub">Four volumes. Seventeen forces. The full project the starter guide is the doorway into.</p>
+      </div>
+      <div class="sg-shelf">
+        {fourVolumes.map(p => (
+          <a href={`${base}/${p.slug}`} class="sg-shelf-link">
+            <BookCover product={p} width={130} />
+            <span class="sg-shelf-label">{p.volumeLabel}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
 </Base>
+
+<style>
+  /* ───────── HERO ───────── */
+  .sg-hero {
+    padding: 80px 32px 96px;
+  }
+  .sg-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .sg-text { max-width: 580px; }
+  .sg-h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(44px, 6.5vw, 80px);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    margin: 24px 0 28px;
+  }
+  .sg-h1 em { font-style: italic; color: var(--gold-dark); }
+  .sg-sub {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: clamp(18px, 1.7vw, 22px);
+    line-height: 1.55;
+    color: var(--text-mid);
+    margin-bottom: 36px;
+    max-width: 480px;
+  }
+  .sg-cover {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  @media (max-width: 900px) {
+    .sg-hero { padding: 56px 20px 64px; }
+    .sg-grid { grid-template-columns: 1fr; gap: 32px; }
+    .sg-cover { order: -1; }
+  }
+
+  /* ───────── INSIDE ───────── */
+  .sg-inside {
+    padding: 80px 32px;
+    background: #f7eedb;
+  }
+  .sg-h2 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(30px, 3.5vw, 44px);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin: 14px 0 20px;
+  }
+  .sg-h2 em { font-style: italic; color: var(--gold-dark); }
+  .sg-h2-center { text-align: center; }
+  .sg-lede {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--text-mid);
+    margin-bottom: 40px;
+  }
+  .sg-forces {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .sg-forces li {
+    display: flex;
+    gap: 24px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .sg-forces li:last-child { border-bottom: none; }
+  .sg-num {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 28px;
+    color: var(--gold-dark);
+    line-height: 1;
+    flex-shrink: 0;
+    width: 40px;
+  }
+  .sg-force-name {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+  .sg-force-tag {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--text-mid);
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  /* ───────── AFTER ───────── */
+  .sg-after {
+    padding: 96px 32px 64px;
+  }
+  .sg-after-head {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 56px;
+  }
+  .sg-after-sub {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--text-mid);
+    font-size: 17px;
+    line-height: 1.55;
+  }
+  .sg-shelf {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .sg-shelf-link {
+    text-decoration: none;
+    text-align: center;
+    transition: transform 350ms ease;
+  }
+  .sg-shelf-link:hover { transform: translateY(-4px); }
+  .sg-shelf-label {
+    display: block;
+    margin-top: 14px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-mid);
+  }
+</style>

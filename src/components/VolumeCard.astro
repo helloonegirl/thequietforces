@@ -1,0 +1,101 @@
+---
+import type { Product } from '../data/catalog';
+import BookCover from './BookCover.astro';
+import PriceTag from './PriceTag.astro';
+
+interface Props {
+  product: Product;
+}
+
+const { product } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const href = `${base}/${product.slug}`;
+const [from] = product.accentGradient;
+---
+
+<a href={href} class="vcard" style={`--accent: ${from};`}>
+  <div class="vcard-cover">
+    <BookCover product={product} width={140} />
+  </div>
+  <div class="vcard-body">
+    <p class="eyebrow vcard-label">
+      {product.volumeLabel}{product.theme && ` · ${product.theme}`}
+    </p>
+    <h3 class="font-serif vcard-title">{product.title}</h3>
+    <p class="vcard-tagline">{product.tagline}</p>
+    <div class="vcard-meta">
+      <span class="vcard-pages">{product.pageCount} pages</span>
+      {product.isFree
+        ? <span class="vcard-free">Free</span>
+        : <PriceTag price={product.price ?? 0} size="sm" showPill={false} />
+      }
+    </div>
+    <span class="vcard-cta">Read more →</span>
+  </div>
+</a>
+
+<style>
+  .vcard {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    background: var(--cream);
+    border-top: 2px solid var(--accent, var(--gold));
+    padding: 36px 30px 32px;
+    transition: transform 350ms ease, background 350ms ease;
+    height: 100%;
+  }
+  .vcard:hover {
+    transform: translateY(-3px);
+    background: #faf4e6;
+  }
+  .vcard-cover {
+    margin-bottom: 28px;
+  }
+  .vcard-label { margin-bottom: 12px; }
+  .vcard-title {
+    font-size: 26px;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+  }
+  .vcard-tagline {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--text-mid);
+    line-height: 1.5;
+    margin-bottom: 24px;
+    font-size: 16px;
+  }
+  .vcard-meta {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    border-top: 1px solid var(--border);
+    padding-top: 18px;
+    margin-bottom: 22px;
+  }
+  .vcard-pages {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .vcard-free {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    color: var(--gold-dark);
+  }
+  .vcard-cta {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+  }
+</style>

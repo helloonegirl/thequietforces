@@ -51,8 +51,16 @@ export interface LaunchPromo {
   endsOn: string;
 }
 
+export interface Newsletter {
+  enabled: boolean;
+  provider: string;
+  actionUrl: string | null;
+  successMessage: string;
+}
+
 export const site         = raw.site;
 export const launchPromo: LaunchPromo = raw.launchPromo;
+export const newsletter:  Newsletter  = raw.newsletter as Newsletter;
 export const products: Product[] = raw.products as Product[];
 export const bundles:  Bundle[]  = raw.bundles  as Bundle[];
 

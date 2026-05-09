@@ -1,0 +1,58 @@
+---
+// BookShelf — the hero arrangement of all five books.
+// Five rectangles overlapping with subtle hand-placed rotation,
+// a single soft shadow on the floor (the "shelf").
+
+import BookCover from './BookCover.astro';
+import { products } from '../data/catalog';
+---
+
+<div class="shelf-wrap">
+  <div class="shelf-row">
+    {products.map((p, i) => (
+      <div class="shelf-book" style={`z-index:${10 - i};`}>
+        <BookCover product={p} width={155} rotate={[-2, 1, -1.5, 0.5, -0.5][i] ?? 0} />
+      </div>
+    ))}
+  </div>
+  <div class="shelf-floor"></div>
+</div>
+
+<style>
+  .shelf-wrap {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 24px;
+  }
+  .shelf-row {
+    display: flex;
+    align-items: flex-end;
+    margin-left: -36px;
+  }
+  .shelf-book {
+    margin-left: -36px;
+    transition: transform 350ms ease;
+  }
+  .shelf-book:first-child { margin-left: 0; }
+  .shelf-book:hover {
+    transform: translateY(-6px);
+  }
+  .shelf-floor {
+    width: 88%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    opacity: 0.55;
+    margin-top: 6px;
+  }
+
+  @media (max-width: 900px) {
+    .shelf-book { margin-left: -28px; }
+    .shelf-row { margin-left: -24px; }
+  }
+  @media (max-width: 640px) {
+    .shelf-row { transform: scale(0.7); transform-origin: center top; margin-bottom: -90px; }
+  }
+</style>
