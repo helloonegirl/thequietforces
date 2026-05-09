@@ -78,9 +78,9 @@ export function bundleIndividualTotal(b: Bundle): number {
 /** Apply the launch promo to a price (returns the discounted price, rounded to .x9). */
 export function applyPromo(price: number): number {
   if (!launchPromo.active) return price;
-  const raw = price * (1 - launchPromo.discountPercent / 100);
-  // Round down to the nearest .x9 for editorial pricing.
-  return Math.floor(raw) + 0.99 > raw ? Math.floor(raw) - 0.01 + 1 : Math.floor(raw) + 0.99;
+  const discounted = price * (1 - launchPromo.discountPercent / 100);
+  // Editorial pricing: floor to whole dollar and add .99 (e.g. $9.99 → $7.99).
+  return Math.floor(discounted) + 0.99;
 }
 
 export function formatPrice(n: number): string {

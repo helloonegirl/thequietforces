@@ -13,14 +13,14 @@ const { pageLabel, headline, blurb } = Astro.props;
 <main class="min-h-screen flex items-center justify-center px-6 py-24 paper-grain">
   <div class="relative z-10 max-w-2xl text-left">
     <p class="eyebrow mb-8">{pageLabel} · In Construction</p>
-    <h1 class="font-serif text-5xl md:text-6xl leading-[1.05] tracking-tighter2 mb-8">
+    <h1 class="font-serif text-5xl md:text-6xl leading-[1.05] tracking-tighter2 mb-8 text-ink">
       {headline}
     </h1>
-    <p class="font-serif italic text-xl leading-relaxed text-text-mid mb-10 max-w-prose2">
+    <p class="font-serif italic text-xl leading-relaxed text-ink-mid mb-10 max-w-prose2">
       {blurb}
     </p>
     <div class="h-px w-16 bg-gold-dark mb-10"></div>
-    <p class="text-sm text-text-dim">
+    <p class="text-sm text-ink-dim">
       The new site is being built in phases. The real design lands here in Phase 2.
     </p>
   </div>
