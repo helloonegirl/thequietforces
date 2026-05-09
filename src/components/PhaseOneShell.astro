@@ -10,7 +10,7 @@ interface Props {
 
 const { pageLabel, headline, blurb } = Astro.props;
 ---
-<main class="min-h-screen flex items-center justify-center px-6 py-24 paper-grain">
+<div class="min-h-screen flex items-center justify-center px-6 py-24 paper-grain">
   <div class="relative z-10 max-w-2xl text-left">
     <p class="eyebrow mb-8">{pageLabel} · In Construction</p>
     <h1 class="font-serif text-5xl md:text-6xl leading-[1.05] tracking-tighter2 mb-8 text-ink">
@@ -24,4 +24,4 @@ const { pageLabel, headline, blurb } = Astro.props;
       The new site is being built in phases. The real design lands here in Phase 2.
     </p>
   </div>
-</main>
+</div>

@@ -13,6 +13,7 @@ import {
   formatDetails,
   commonFaq,
   formatPrice,
+  site,
 } from '../data/catalog';
 
 interface Props {
@@ -32,13 +33,59 @@ const nextItems = p.continueWith
     try { return getProduct(s); } catch { return null; }
   })
   .filter((x): x is ReturnType<typeof getProduct> => x !== null);
+
+// JSON-LD: Product schema for rich-result search listings
+const productSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: `${p.volumeLabel} · ${p.title}`,
+  description: p.metaDescription,
+  image: `${site.domain}/og/default.svg`,
+  brand: { '@type': 'Brand', name: site.brandName },
+  ...(p.isFree
+    ? {
+        offers: {
+          '@type': 'Offer',
+          url: `${site.domain}/${p.slug}/`,
+          priceCurrency: 'USD',
+          price: '0.00',
+          availability: 'https://schema.org/InStock',
+        },
+      }
+    : {
+        offers: {
+          '@type': 'Offer',
+          url: `${site.domain}/${p.slug}/`,
+          priceCurrency: 'USD',
+          price: (p.price ?? 0).toFixed(2),
+          availability: 'https://schema.org/InStock',
+        },
+      }),
+};
+
+// JSON-LD: FAQPage schema, only if this product has unique FAQ entries
+const faqSchema = (p.faq && p.faq.length > 0) ? {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: p.faq.map(item => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: { '@type': 'Answer', text: item.a },
+  })),
+} : null;
+
+const pageSchemas = faqSchema ? [productSchema, faqSchema] : [productSchema];
 ---
 
-<Base title={`${p.volumeLabel} · ${p.title}`} description={p.metaDescription}>
+<Base
+  title={`${p.volumeLabel} · ${p.title}`}
+  description={p.metaDescription}
+  schema={pageSchemas}
+>
 
   {/* ═══════════ HERO ═══════════ */}
   <section
-    class="pp-hero"
+    class="pp-hero paper-grain"
     style={`--accent-from: ${from}; --accent-to: ${to};`}
   >
     <div class="pp-hero-tint"></div>

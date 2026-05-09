@@ -84,8 +84,40 @@
     color: var(--text);
   }
 
-  /* Paper-grain texture is added in Phase 2. */
+  /* Subtle paper-grain — applied to hero sections.
+     Texture file lives at public/textures/grain.svg.
+     `isolation: isolate` creates a fresh stacking context so the
+     negative-z-index pseudo doesn't leak through ancestors. */
   .paper-grain {
     position: relative;
+    isolation: isolate;
+  }
+  .paper-grain::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.04;
+    background-image: url("/thequietforces/textures/grain.svg");
+    background-size: 220px 220px;
+    z-index: -1;
+  }
+
+  /* Skip-to-main link for keyboard users — invisible until focused. */
+  .skip-to-main {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    background: var(--text);
+    color: var(--cream);
+    padding: 12px 18px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    z-index: 1000;
+    text-decoration: none;
+  }
+  .skip-to-main:focus {
+    left: 16px;
+    top: 16px;
   }
 }

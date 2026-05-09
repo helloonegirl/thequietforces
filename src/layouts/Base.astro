@@ -3,12 +3,14 @@ import '../styles/global.css';
 import { site } from '../data/catalog';
 import SiteNav from '../components/SiteNav.astro';
 import Footer from '../components/Footer.astro';
+import LaunchBanner from '../components/LaunchBanner.astro';
 
 interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
-  bare?: boolean;     // hide nav + footer (rare — used for landing pages later)
+  bare?: boolean;            // hide nav + footer (rare — used for landing pages)
+  schema?: object | object[]; // optional JSON-LD blocks for the page
 }
 
 const {
@@ -16,10 +18,27 @@ const {
   description = site.tagline,
   ogImage,
   bare = false,
+  schema,
 } = Astro.props;
 
 const fullTitle = title === site.brandName ? title : `${title} · ${site.brandName}`;
 const canonical = `${site.domain}${Astro.url.pathname.replace(/^\/thequietforces/, '')}`;
+const finalOgImage = ogImage ?? `${site.domain}/og/default.svg`;
+
+// Organization schema — always present.
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: site.brandName,
+  url: `${site.domain}/`,
+  description: site.tagline,
+  logo: `${site.domain}/og/default.svg`,
+};
+
+// Combine page-level schema with organization (always emit organization).
+const allSchemas: object[] = [organizationSchema];
+if (Array.isArray(schema)) allSchemas.push(...schema);
+else if (schema)           allSchemas.push(schema);
 ---
 <!doctype html>
 <html lang="en">
@@ -28,7 +47,9 @@ const canonical = `${site.domain}${Astro.url.pathname.replace(/^\/thequietforces
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
+    <meta name="theme-color" content="#fdfaf3" />
     <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/thequietforces/favicon.svg" />
 
     {/* Fonts — preconnected for performance */}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -40,16 +61,27 @@ const canonical = `${site.domain}${Astro.url.pathname.replace(/^\/thequietforces
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    {ogImage && <meta property="og:image" content={ogImage} />}
-    <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+    <meta property="og:image" content={finalOgImage} />
+    <meta property="og:site_name" content={site.brandName} />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={finalOgImage} />
+
+    {/* Structured data — Organization + any page-specific schemas */}
+    {allSchemas.map(s => (
+      <script type="application/ld+json" set:html={JSON.stringify(s)} />
+    ))}
 
     <slot name="head" />
   </head>
   <body>
+    <a href="#main" class="skip-to-main">Skip to content</a>
+    {!bare && <LaunchBanner />}
     {!bare && <SiteNav />}
-    <slot />
+    <main id="main">
+      <slot />
+    </main>
     {!bare && <Footer />}
   </body>
 </html>

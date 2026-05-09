@@ -1,0 +1,65 @@
+---
+// LaunchBanner — appears site-wide when launchPromo.active is true.
+// Toggle in src/data/products.json → launchPromo.active.
+import { launchPromo } from '../data/catalog';
+
+if (!launchPromo.active) {
+  // Render nothing if promo is off.
+}
+
+// Compute days remaining (only if endsOn is a valid date in the future).
+let daysLeft: number | null = null;
+const ends = new Date(launchPromo.endsOn);
+if (!isNaN(ends.getTime())) {
+  const diff = ends.getTime() - Date.now();
+  daysLeft = diff > 0 ? Math.ceil(diff / (1000 * 60 * 60 * 24)) : 0;
+}
+---
+
+{launchPromo.active && (
+  <div class="lb" role="region" aria-label="Launch edition promotion">
+    <div class="lb-inner">
+      <span class="lb-label">{launchPromo.label}</span>
+      <span class="lb-divider" aria-hidden="true">·</span>
+      <span class="lb-detail">
+        {launchPromo.discountPercent}% off every book
+        {daysLeft !== null && daysLeft > 0 && (
+          <> · <span class="lb-days">{daysLeft} {daysLeft === 1 ? 'day' : 'days'} left</span></>
+        )}
+      </span>
+    </div>
+  </div>
+)}
+
+<style>
+  .lb {
+    background: var(--text);
+    color: var(--cream);
+    padding: 10px 24px;
+    text-align: center;
+    border-bottom: 1px solid #1a1a1a;
+  }
+  .lb-inner {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .lb-label {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--gold-bright);
+  }
+  .lb-divider { color: rgba(255,255,255,0.35); }
+  .lb-detail { color: rgba(255,255,255,0.85); }
+  .lb-days { color: var(--gold-bright); font-weight: 600; }
+  @media (max-width: 600px) {
+    .lb { padding: 8px 16px; }
+    .lb-inner { font-size: 11px; gap: 8px; }
+  }
+</style>
