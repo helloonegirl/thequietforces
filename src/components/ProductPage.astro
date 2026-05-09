@@ -1,0 +1,455 @@
+---
+// ProductPage — single template that renders a complete paid-volume page.
+// Each route file (volume-one.astro etc) just imports this and passes a slug.
+
+import Base from '../layouts/Base.astro';
+import BookCover from './BookCover.astro';
+import VolumeCard from './VolumeCard.astro';
+import SpreadCarousel from './SpreadCarousel.astro';
+import Faq from './Faq.astro';
+import PriceTag from './PriceTag.astro';
+import {
+  getProduct,
+  formatDetails,
+  commonFaq,
+  formatPrice,
+} from '../data/catalog';
+
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+const p = getProduct(slug);
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const [from, to] = p.accentGradient;
+const allFaq = [...(p.faq ?? []), ...commonFaq];
+
+// Continue-the-journey items resolve from slugs to product objects.
+const nextItems = p.continueWith
+  .map(s => {
+    try { return getProduct(s); } catch { return null; }
+  })
+  .filter((x): x is ReturnType<typeof getProduct> => x !== null);
+---
+
+<Base title={`${p.volumeLabel} · ${p.title}`} description={p.metaDescription}>
+
+  {/* ═══════════ HERO ═══════════ */}
+  <section
+    class="pp-hero"
+    style={`--accent-from: ${from}; --accent-to: ${to};`}
+  >
+    <div class="pp-hero-tint"></div>
+    <div class="pp-hero-grid">
+      <div class="pp-hero-cover">
+        <BookCover product={p} width={300} />
+      </div>
+      <div class="pp-hero-text">
+        <p class="eyebrow">{p.volumeLabel}{p.theme && ` · ${p.theme}`}</p>
+        <h1 class="pp-h1">{p.title}</h1>
+        <p class="pp-tagline">{p.tagline}</p>
+        <p class="pp-long">{p.longDescription}</p>
+        <div class="pp-buy">
+          {p.isFree ? (
+            <a href={`${base}/starter-guide`} class="pp-cta">Get the free guide →</a>
+          ) : (
+            <>
+              <PriceTag price={p.price ?? 0} size="lg" />
+              <a href={p.payhipUrl ?? '#'} class="pp-cta">Get {p.title} →</a>
+              {!p.payhipUrl && (
+                <p class="pp-todo">Payhip URL pending — set <code>products.json → {p.slug} → payhipUrl</code> to wire this button up.</p>
+              )}
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ═══════════ WHAT'S INSIDE ═══════════ */}
+  <section class="pp-section">
+    <div class="container-page pp-section-inner">
+      <div class="pp-section-head">
+        <p class="eyebrow">What's Inside</p>
+        <h2 class="pp-h2">{p.forces.length} forces. <em>One project.</em></h2>
+      </div>
+      <ol class="pp-forces">
+        {p.forces.map((f, i) => (
+          <li>
+            <span class="pp-force-num">{['I','II','III','IV','V','VI','VII'][i]}</span>
+            <div>
+              <h3 class="pp-force-name">{f.name}</h3>
+              <p class="pp-force-tag">{f.tagline}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  {/* ═══════════ INSIDE THE BOOK (spread carousel) ═══════════ */}
+  <section class="pp-section pp-section-tight">
+    <div class="container-page">
+      <div class="pp-section-head">
+        <p class="eyebrow">Inside the Book</p>
+        <h2 class="pp-h2">A few <em>spreads.</em></h2>
+      </div>
+    </div>
+    <div class="pp-carousel-wrap">
+      <SpreadCarousel product={p} />
+    </div>
+  </section>
+
+  {/* ═══════════ PULL QUOTE ═══════════ */}
+  {p.pullQuote && (
+    <section class="pp-quote">
+      <div class="container-page">
+        <p class="pp-quote-text">"{p.pullQuote}"</p>
+      </div>
+    </section>
+  )}
+
+  {/* ═══════════ FORMAT & DETAILS ═══════════ */}
+  <section class="pp-section">
+    <div class="container-page">
+      <div class="pp-section-head">
+        <p class="eyebrow">Format &amp; Details</p>
+        <h2 class="pp-h2">A real <em>artifact.</em></h2>
+      </div>
+      <div class="pp-details">
+        <div class="pp-detail"><span class="pp-detail-label">Pages</span><span class="pp-detail-val">{p.pageCount}</span></div>
+        <div class="pp-detail"><span class="pp-detail-label">Format</span><span class="pp-detail-val">{formatDetails.format}</span></div>
+        <div class="pp-detail"><span class="pp-detail-label">File size</span><span class="pp-detail-val">{formatDetails.fileSize}</span></div>
+        <div class="pp-detail"><span class="pp-detail-label">Compatibility</span><span class="pp-detail-val">{formatDetails.compatibility}</span></div>
+        <div class="pp-detail"><span class="pp-detail-label">Delivery</span><span class="pp-detail-val">{formatDetails.delivery}</span></div>
+        <div class="pp-detail"><span class="pp-detail-label">Updates</span><span class="pp-detail-val">{formatDetails.updates}</span></div>
+      </div>
+    </div>
+  </section>
+
+  {/* ═══════════ FAQ ═══════════ */}
+  <section class="pp-section">
+    <div class="container-page">
+      <div class="pp-section-head pp-section-head-center">
+        <p class="eyebrow">Questions</p>
+        <h2 class="pp-h2">The short <em>answers.</em></h2>
+      </div>
+      <Faq items={allFaq} />
+    </div>
+  </section>
+
+  {/* ═══════════ CONTINUE THE JOURNEY ═══════════ */}
+  {nextItems.length > 0 && (
+    <section class="pp-section pp-continue">
+      <div class="container-page">
+        <div class="pp-section-head">
+          <p class="eyebrow">Continue the Journey</p>
+          <h2 class="pp-h2">Where this <em>goes next.</em></h2>
+        </div>
+        <div class="pp-next-grid" data-count={nextItems.length}>
+          {nextItems.map(n => <VolumeCard product={n} />)}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {/* ═══════════ BOTTOM BUY STRIP ═══════════ */}
+  {!p.isFree && (
+    <section class="pp-strip" style={`background: linear-gradient(140deg, ${from}, ${to});`}>
+      <div class="container-page pp-strip-inner">
+        <div>
+          <p class="pp-strip-eyebrow">{p.volumeLabel}{p.theme && ` · ${p.theme}`}</p>
+          <h2 class="pp-strip-h2">Take the wheel back.</h2>
+        </div>
+        <div class="pp-strip-buy">
+          <PriceTag price={p.price ?? 0} size="md" />
+          <a href={p.payhipUrl ?? '#'} class="pp-strip-cta">Get {p.title} →</a>
+        </div>
+      </div>
+    </section>
+  )}
+
+</Base>
+
+<style>
+  /* ───────── HERO ───────── */
+  .pp-hero {
+    position: relative;
+    padding: 80px 32px 96px;
+    overflow: hidden;
+  }
+  .pp-hero-tint {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(140deg, var(--accent-from), var(--accent-to));
+    opacity: 0.06;
+    pointer-events: none;
+  }
+  .pp-hero-grid {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .pp-hero-cover { display: flex; justify-content: center; }
+  .pp-hero-text { max-width: 540px; }
+  .pp-h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    margin: 18px 0 18px;
+    color: var(--text);
+  }
+  .pp-tagline {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 22px;
+    line-height: 1.4;
+    color: var(--gold-dark);
+    margin-bottom: 24px;
+  }
+  .pp-long {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--text-mid);
+    margin-bottom: 36px;
+  }
+  .pp-buy {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+  }
+  .pp-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--text);
+    color: var(--cream);
+    padding: 18px 36px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 200ms ease, transform 200ms ease;
+  }
+  .pp-cta:hover { background: #1a1a1a; transform: translateY(-1px); }
+  .pp-todo {
+    font-size: 11px;
+    color: var(--text-dim);
+    font-family: 'Inter', sans-serif;
+    max-width: 380px;
+    margin: 0;
+  }
+  .pp-todo code {
+    background: rgba(166,138,62,0.12);
+    padding: 1px 5px;
+    color: var(--gold-dark);
+    font-size: 11px;
+  }
+  @media (max-width: 900px) {
+    .pp-hero { padding: 56px 20px 64px; }
+    .pp-hero-grid { grid-template-columns: 1fr; gap: 32px; }
+    .pp-hero-cover { order: -1; }
+  }
+
+  /* ───────── SECTION ATOMS ───────── */
+  .pp-section { padding: 80px 32px; }
+  .pp-section-tight { padding-bottom: 32px; }
+  .pp-section-inner { display: block; }
+  .pp-section-head {
+    max-width: 700px;
+    margin-bottom: 48px;
+  }
+  .pp-section-head-center {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+  .pp-h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(30px, 3.6vw, 44px);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin-top: 14px;
+  }
+  .pp-h2 em { font-style: italic; color: var(--gold-dark); }
+
+  /* ───────── FORCES LIST ───────── */
+  .pp-forces {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-width: 780px;
+  }
+  .pp-forces li {
+    display: flex;
+    gap: 28px;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .pp-forces li:last-child { border-bottom: none; }
+  .pp-force-num {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 32px;
+    color: var(--gold-dark);
+    line-height: 1;
+    flex-shrink: 0;
+    width: 48px;
+  }
+  .pp-force-name {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 400;
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+  .pp-force-tag {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--text-mid);
+    font-size: 17px;
+    line-height: 1.5;
+  }
+
+  /* ───────── CAROUSEL WRAP (allow scroll past container edges) ───────── */
+  .pp-carousel-wrap {
+    padding-left: max(32px, calc((100vw - 1200px) / 2));
+  }
+
+  /* ───────── PULL QUOTE ───────── */
+  .pp-quote {
+    padding: 100px 32px;
+    text-align: center;
+  }
+  .pp-quote-text {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(26px, 3.5vw, 38px);
+    line-height: 1.4;
+    color: var(--text-mid);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* ───────── DETAILS ───────── */
+  .pp-details {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .pp-detail {
+    background: var(--cream);
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .pp-detail-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    font-weight: 600;
+  }
+  .pp-detail-val {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    color: var(--text);
+    line-height: 1.4;
+  }
+  @media (max-width: 760px) {
+    .pp-details { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 480px) {
+    .pp-details { grid-template-columns: 1fr; }
+  }
+
+  /* ───────── CONTINUE GRID ───────── */
+  .pp-next-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+    max-width: 880px;
+  }
+  .pp-next-grid[data-count="1"] { grid-template-columns: 1fr; max-width: 440px; }
+  @media (max-width: 760px) {
+    .pp-next-grid { grid-template-columns: 1fr; gap: 20px; }
+  }
+
+  /* ───────── BOTTOM BUY STRIP ───────── */
+  .pp-strip {
+    color: white;
+    padding: 64px 32px;
+    margin-top: 64px;
+  }
+  .pp-strip-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .pp-strip-eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold-bright);
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .pp-strip-h2 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(28px, 3.2vw, 38px);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    color: white;
+    line-height: 1.1;
+  }
+  .pp-strip-buy {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  /* Override PriceTag colors in the dark strip */
+  .pp-strip :global(.price-now) { color: white; }
+  .pp-strip :global(.price-was) { color: rgba(255,255,255,0.6); }
+  .pp-strip :global(.price-pill) {
+    color: var(--gold-bright);
+    border-color: var(--gold-bright);
+  }
+  .pp-strip-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--gold);
+    color: var(--text);
+    padding: 16px 28px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 200ms ease, transform 200ms ease;
+  }
+  .pp-strip-cta:hover { background: #f5c878; transform: translateY(-1px); }
+</style>

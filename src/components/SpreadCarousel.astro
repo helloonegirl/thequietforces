@@ -1,0 +1,83 @@
+---
+// SpreadCarousel — horizontally scrollable strip of "page spreads" from a book.
+// Until you supply real spread images, renders gradient placeholders.
+//
+// To replace placeholders with real images, drop them into:
+//   public/spreads/<slug>-1.jpg, <slug>-2.jpg, ... (1600x1000 recommended)
+// then this component will use them automatically.
+
+import type { Product } from '../data/catalog';
+
+interface Props {
+  product: Product;
+  count?: number; // how many spread placeholders to render; default 5
+}
+
+const { product, count = 5 } = Astro.props;
+const [from, to] = product.accentGradient;
+---
+
+<div class="spread-row" aria-label={`Sample spreads from ${product.title}`}>
+  {Array.from({ length: count }).map((_, i) => (
+    <div class="spread-card" style={`background: linear-gradient(140deg, ${from}, ${to});`}>
+      <div class="spread-inner">
+        <span class="spread-label">{product.volumeLabel}</span>
+        <span class="spread-num">Spread {i + 1}</span>
+        <span class="spread-note">Placeholder · drop public/spreads/{product.slug}-{i + 1}.jpg to replace</span>
+      </div>
+    </div>
+  ))}
+</div>
+
+<style>
+  .spread-row {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 8px 4px 32px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gold-dark) transparent;
+  }
+  .spread-row::-webkit-scrollbar { height: 6px; }
+  .spread-row::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 3px; }
+  .spread-card {
+    flex: 0 0 auto;
+    width: clamp(280px, 38vw, 420px);
+    aspect-ratio: 1.6 / 1;
+    scroll-snap-align: start;
+    color: white;
+    display: flex;
+    align-items: stretch;
+    box-shadow: 0 24px 30px -22px rgba(15,15,15,0.4);
+  }
+  .spread-inner {
+    width: 100%;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .spread-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    opacity: 0.75;
+  }
+  .spread-num {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 28px;
+    line-height: 1;
+  }
+  .spread-note {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    opacity: 0.55;
+    line-height: 1.5;
+  }
+</style>

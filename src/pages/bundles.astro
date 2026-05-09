@@ -1,11 +1,340 @@
 ---
 import Base from '../layouts/Base.astro';
-import PhaseOneShell from '../components/PhaseOneShell.astro';
+import {
+  bundles,
+  getProduct,
+  bundleIndividualTotal,
+  formatPrice,
+  applyPromo,
+  launchPromo,
+} from '../data/catalog';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+// Order: smaller bundles first, flagship last (most prominent)
+const ordered = [...bundles].sort((a, b) => Number(a.isFlagship) - Number(b.isFlagship));
 ---
+
 <Base title="Bundles" description="Read more, pay less. Three bundles spanning the four-book set.">
-  <PhaseOneShell
-    pageLabel="Bundles"
-    headline="Read more. Pay less."
-    blurb="Three bundles spanning the four-book set — pick how deep you want to go."
-  />
+
+  {/* ═══════════ HEADER ═══════════ */}
+  <section class="b-header">
+    <div class="container-prose">
+      <p class="eyebrow">Bundles</p>
+      <h1 class="b-h1">Read more.<br /><em>Pay less.</em></h1>
+      <p class="b-sub">
+        Three bundles spanning the four-book set. Pick how deep you want to go — the trilogy alone, or the trilogy plus the twelve-week companion workbook.
+      </p>
+    </div>
+  </section>
+
+  {/* ═══════════ BUNDLE CARDS ═══════════ */}
+  <section class="b-list">
+    {ordered.map(bundle => {
+      const items = bundle.includes.map(s => getProduct(s));
+      const individualTotal = bundleIndividualTotal(bundle);
+      const finalPrice = launchPromo.active ? applyPromo(bundle.bundlePrice) : bundle.bundlePrice;
+      const savings = (individualTotal - finalPrice).toFixed(2);
+      return (
+        <article class={`bcard ${bundle.isFlagship ? 'bcard-flagship' : ''}`}>
+          <div class="bcard-shelf">
+            {items.map((p, i) => (
+              <div class="bcard-book" style={`z-index:${10 - i}; background: linear-gradient(155deg, ${p.accentGradient[0]}, ${p.accentGradient[1]});`}>
+                <span class="bcard-book-label">{p.volumeLabel}</span>
+                <span class="bcard-book-title">{p.title}</span>
+                <span class="bcard-book-theme">{p.theme}</span>
+              </div>
+            ))}
+          </div>
+          <div class="bcard-body">
+            {bundle.isFlagship && <span class="bcard-flagship-tag">Flagship</span>}
+            <h2 class="bcard-title">{bundle.title}</h2>
+            <p class="bcard-sub">{bundle.subtitle}</p>
+            <ul class="bcard-includes">
+              {items.map(p => (
+                <li>
+                  <span class="bcard-inc-name">{p.volumeLabel} · {p.title}</span>
+                  <span class="bcard-inc-price">{formatPrice(p.price ?? 0)}</span>
+                </li>
+              ))}
+            </ul>
+            <div class="bcard-price-row">
+              <div>
+                <div class="bcard-now">{formatPrice(finalPrice)}</div>
+                <div class="bcard-was">{formatPrice(individualTotal)} individually</div>
+              </div>
+              <div class="bcard-save">Save ${savings}</div>
+            </div>
+            <a href={bundle.payhipUrl ?? '#'} class={`bcard-cta ${bundle.isFlagship ? 'bcard-cta-flagship' : ''}`}>
+              Get the {bundle.title.replace(/^The /, '').toLowerCase()} →
+            </a>
+            {!bundle.payhipUrl && (
+              <p class="bcard-todo">Payhip URL pending — set <code>products.json → bundles → {bundle.slug} → payhipUrl</code> to wire this button up.</p>
+            )}
+          </div>
+        </article>
+      );
+    })}
+  </section>
+
+  {/* ═══════════ COMPARISON STRIP ═══════════ */}
+  <section class="b-compare">
+    <div class="container-prose">
+      <p class="eyebrow">Not Sure Which One?</p>
+      <h2 class="b-h2">A simple way to choose.</h2>
+      <ul class="b-compare-list">
+        <li><strong>If you want a taste:</strong> start with the free Starter Guide and Volume I individually.</li>
+        <li><strong>If you want the trilogy:</strong> the Seventeen-Force Bundle is the best per-page price.</li>
+        <li><strong>If you want a real change:</strong> the Complete Change Kit gives you the trilogy plus the twelve-week practice — the only set that turns reading into doing.</li>
+      </ul>
+      <a href={`${base}/`} class="b-back">← Back to the homepage</a>
+    </div>
+  </section>
+
 </Base>
+
+<style>
+  .b-header {
+    padding: 96px 32px 56px;
+    text-align: left;
+  }
+  .b-h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(48px, 7vw, 88px);
+    line-height: 1.04;
+    letter-spacing: -0.015em;
+    margin: 18px 0 24px;
+  }
+  .b-h1 em { font-style: italic; color: var(--gold-dark); }
+  .b-sub {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--text-mid);
+    font-size: 21px;
+    line-height: 1.55;
+    max-width: 560px;
+  }
+
+  .b-list {
+    max-width: 1100px;
+    margin: 64px auto 0;
+    padding: 0 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .bcard {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: 56px;
+    align-items: center;
+    background: var(--cream);
+    border-top: 2px solid var(--gold-bright);
+    padding: 56px 48px;
+  }
+  .bcard-flagship {
+    background: #f7eedb;
+    padding: 72px 56px;
+    border-top-color: var(--gold);
+    border-top-width: 3px;
+  }
+  .bcard-flagship-tag {
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    background: rgba(166,138,62,0.12);
+    padding: 6px 12px;
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+
+  .bcard-shelf {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 8px;
+    perspective: 1000px;
+  }
+  .bcard-book {
+    width: 95px;
+    height: 142px;
+    flex-shrink: 0;
+    color: white;
+    padding: 12px 9px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 24px 26px -20px rgba(15,15,15,0.4);
+  }
+  .bcard-book-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 7px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+  .bcard-book-title {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 11px;
+    line-height: 1.15;
+  }
+  .bcard-book-theme {
+    font-family: 'Inter', sans-serif;
+    font-size: 7px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+
+  .bcard-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(28px, 3.6vw, 40px);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .bcard-sub {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--text-mid);
+    font-size: 17px;
+    line-height: 1.55;
+    margin-bottom: 24px;
+  }
+  .bcard-includes {
+    list-style: none;
+    padding: 20px 0;
+    margin: 0 0 24px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .bcard-includes li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    padding: 6px 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--text-mid);
+  }
+  .bcard-inc-name { flex: 1; }
+  .bcard-inc-price {
+    color: var(--text-dim);
+    font-variant-numeric: tabular-nums;
+  }
+  .bcard-price-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .bcard-now {
+    font-family: 'Fraunces', serif;
+    font-size: 48px;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--text);
+  }
+  .bcard-was {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-top: 6px;
+    text-decoration: line-through;
+  }
+  .bcard-save {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--gold-dark);
+    font-size: 18px;
+  }
+  .bcard-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--text);
+    color: var(--cream);
+    padding: 16px 32px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 200ms ease, transform 200ms ease;
+  }
+  .bcard-cta:hover { background: #1a1a1a; transform: translateY(-1px); }
+  .bcard-cta-flagship {
+    background: var(--gold);
+    color: var(--text);
+  }
+  .bcard-cta-flagship:hover { background: #f5c878; }
+  .bcard-todo {
+    margin-top: 14px;
+    font-size: 11px;
+    color: var(--text-dim);
+    font-family: 'Inter', sans-serif;
+  }
+  .bcard-todo code {
+    background: rgba(166,138,62,0.12);
+    padding: 1px 5px;
+    color: var(--gold-dark);
+    font-size: 11px;
+  }
+
+  @media (max-width: 900px) {
+    .bcard, .bcard-flagship { grid-template-columns: 1fr; gap: 32px; padding: 40px 28px; }
+    .bcard-shelf { order: -1; }
+    .bcard-book { width: 75px; height: 112px; }
+  }
+
+  /* ───────── COMPARE ───────── */
+  .b-compare {
+    padding: 80px 32px 32px;
+  }
+  .b-h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(28px, 3.4vw, 40px);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin: 12px 0 28px;
+  }
+  .b-compare-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 40px;
+  }
+  .b-compare-list li {
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    color: var(--text-mid);
+    line-height: 1.6;
+  }
+  .b-compare-list li strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+  .b-back {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: var(--gold-dark);
+    text-decoration: none;
+    border-bottom: 1px solid var(--gold);
+    padding-bottom: 4px;
+    transition: color 200ms ease;
+  }
+  .b-back:hover { color: var(--text); }
+</style>

@@ -22,6 +22,21 @@
     "successMessage": "Check your inbox — the guide is on its way."
   },
 
+  "formatDetails": {
+    "format": "Designed PDF",
+    "fileSize": "~12 MB",
+    "compatibility": "Any device · prints beautifully on US Letter",
+    "delivery": "Instant download after purchase",
+    "updates": "Lifetime free updates",
+    "refund": "100% refund within 30 days, no questions"
+  },
+
+  "commonFaq": [
+    { "q": "What format is the book in?", "a": "A high-quality designed PDF. Reads beautifully on screens and prints cleanly on any home or office printer at US Letter size." },
+    { "q": "How fast do I get it?", "a": "Instantly. The download link appears the moment your payment goes through, and a copy is also sent to your email." },
+    { "q": "What if it's not for me?", "a": "Email me within 30 days and you'll get a full refund. No forms, no friction." }
+  ],
+
   "products": [
     {
       "slug": "starter-guide",
@@ -77,7 +92,12 @@
       "comingSoon": false,
       "continueWith": ["volume-two", "complete-change-kit"],
       "metaDescription": "Volume I of The Quiet Forces — a 91-page workbook on seven psychological forces shaping how you live with yourself.",
-      "ogImage": null
+      "ogImage": null,
+      "faq": [
+        { "q": "Is this a workbook or a regular read?", "a": "Both. Each chapter has the essay, the research, and a written exercise at the end. You can read it through once and then come back with a pen." },
+        { "q": "Do I need to read the volumes in order?", "a": "No. Each volume stands on its own. Most readers start with Volume I because it's the most foundational, but any volume is a complete read." },
+        { "q": "How long does it take to get through?", "a": "Most readers finish a chapter in twenty minutes. Working the exercises adds another fifteen to thirty per chapter." }
+      ]
     },
     {
       "slug": "volume-two",
@@ -97,14 +117,19 @@
         { "name": "Survivorship Bias", "tagline": "Why the lessons of the winners are usually the wrong lessons." },
         { "name": "The Sunk Cost Fallacy", "tagline": "Why the cost of staying is hidden in plain sight." }
       ],
-      "pullQuote": null,
+      "pullQuote": "The hardest forces to see are the ones you mistake for thinking.",
       "coverImage": null,
       "accentGradient": ["#2a1a1a", "#5a2c2c"],
       "payhipUrl": null,
       "comingSoon": false,
       "continueWith": ["volume-three", "twelve-force-bundle"],
       "metaDescription": "Volume II of The Quiet Forces — a 67-page workbook on five cognitive biases distorting your judgment.",
-      "ogImage": null
+      "ogImage": null,
+      "faq": [
+        { "q": "Is this just behavioural economics?", "a": "It draws on that tradition but pulls from cognitive psychology and philosophy too. The point isn't to catalogue biases — it's to give you the move that loosens each one's grip." },
+        { "q": "Will this help me make better decisions at work?", "a": "Yes — most of the biases in Volume II show up most loudly in professional decisions: hiring, planning, evaluating. The exercises are written to apply to either work or personal life." },
+        { "q": "Should I read Volume I first?", "a": "Not required. Volume II is self-contained. But many readers find Volume I changes how they read Volume II." }
+      ]
     },
     {
       "slug": "volume-three",
@@ -124,14 +149,19 @@
         { "name": "Reciprocity", "tagline": "Why the smallest gift creates the largest obligation." },
         { "name": "The Halo Effect", "tagline": "Why one good trait persuades you of every other good trait." }
       ],
-      "pullQuote": null,
+      "pullQuote": "The first job of any social force is to make itself look like character.",
       "coverImage": null,
       "accentGradient": ["#0f2418", "#1e4330"],
       "payhipUrl": null,
       "comingSoon": false,
       "continueWith": ["the-quiet-work", "seventeen-force-bundle"],
       "metaDescription": "Volume III of The Quiet Forces — a 68-page workbook on five social forces shaping how you see other people.",
-      "ogImage": null
+      "ogImage": null,
+      "faq": [
+        { "q": "Is this a guide to manipulation?", "a": "No. It's a guide to seeing the social forces that already act on you and on the people around you. The exercises are about defending your own judgment, not influencing other people's." },
+        { "q": "Does this work if I'm an introvert?", "a": "Yes — most of these forces operate regardless of how social you are. If anything, the chapters on Social Proof and the Halo Effect have been described by introverted readers as the most clarifying." },
+        { "q": "Should I read the trilogy in order?", "a": "Not strictly. Each book stands alone. But the trilogy is sequenced from inner (Being) to thinking (Deciding) to social (Relating) on purpose, and it reads cleanly that way." }
+      ]
     },
     {
       "slug": "the-quiet-work",
@@ -150,14 +180,20 @@
         { "name": "The Build", "tagline": "Three weeks of adding what is." },
         { "name": "The Integration", "tagline": "Three weeks of making the change unconscious." }
       ],
-      "pullQuote": null,
+      "pullQuote": "Insight is cheap. The work is what makes it real.",
       "coverImage": null,
       "accentGradient": ["#3a1a12", "#6b2c1e"],
       "payhipUrl": null,
       "comingSoon": false,
       "continueWith": ["complete-change-kit"],
       "metaDescription": "The Quiet Work — a 110-page twelve-week guided practice workbook. Eighty-four daily prompts that turn the ideas into a change you can feel.",
-      "ogImage": null
+      "ogImage": null,
+      "faq": [
+        { "q": "Do I need to have read the trilogy first?", "a": "No. The Quiet Work stands on its own. But it's much richer if you've read at least one of the volumes — the prompts assume the underlying language." },
+        { "q": "How long does each daily prompt take?", "a": "Ten to fifteen minutes is the design target. Some land in five. Some open something bigger and you spend an hour with them. The book leaves the pace to you." },
+        { "q": "Is this religious or spiritual?", "a": "No. The Quiet Work is secular. It draws on psychology, philosophy, and craft traditions. Anyone who is willing to write honestly to themselves can do it." },
+        { "q": "Can I do this alongside therapy or coaching?", "a": "Yes — many readers do. The prompts often surface material worth bringing into a session." }
+      ]
     }
   ],
 

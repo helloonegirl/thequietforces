@@ -11,6 +11,11 @@ export interface Force {
   tagline: string;
 }
 
+export interface FaqItem {
+  q: string;
+  a: string;
+}
+
 export interface Product {
   slug: string;
   volumeLabel: string;
@@ -31,6 +36,16 @@ export interface Product {
   continueWith: string[];
   metaDescription: string;
   ogImage: string | null;
+  faq?: FaqItem[];
+}
+
+export interface FormatDetails {
+  format: string;
+  fileSize: string;
+  compatibility: string;
+  delivery: string;
+  updates: string;
+  refund: string;
 }
 
 export interface Bundle {
@@ -58,9 +73,11 @@ export interface Newsletter {
   successMessage: string;
 }
 
-export const site         = raw.site;
-export const launchPromo: LaunchPromo = raw.launchPromo;
-export const newsletter:  Newsletter  = raw.newsletter as Newsletter;
+export const site           = raw.site;
+export const launchPromo: LaunchPromo     = raw.launchPromo;
+export const newsletter:  Newsletter      = raw.newsletter as Newsletter;
+export const formatDetails: FormatDetails = raw.formatDetails as FormatDetails;
+export const commonFaq:   FaqItem[]       = raw.commonFaq as FaqItem[];
 export const products: Product[] = raw.products as Product[];
 export const bundles:  Bundle[]  = raw.bundles  as Bundle[];
 

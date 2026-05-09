@@ -1,11 +1,175 @@
 ---
 import Base from '../layouts/Base.astro';
-import PhaseOneShell from '../components/PhaseOneShell.astro';
+import BookCover from '../components/BookCover.astro';
+import { products } from '../data/catalog';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const fourVolumes = products.filter(p => p.slug !== 'starter-guide');
 ---
-<Base title="About" description="Why The Quiet Forces exists.">
-  <PhaseOneShell
-    pageLabel="About"
-    headline="Why this exists."
-    blurb="A brand built around the conviction that most of the forces shaping a life are not visible — and that naming them is most of the work."
-  />
+
+<Base title="About" description="The Quiet Forces is a four-book project on the psychological forces shaping a life — and the practice of taking the wheel back.">
+
+  <article class="ab">
+    <header class="ab-header">
+      <p class="eyebrow">About</p>
+      <h1 class="ab-h1">Why this <em>exists.</em></h1>
+    </header>
+
+    <div class="ab-body">
+      <p class="ab-lead">
+        Most of the forces that shape a life are invisible. They have names — psychologists and philosophers have studied them for a hundred years — but the names rarely make it as far as the people the forces are acting on.
+      </p>
+
+      <p>
+        The Quiet Forces is a small project with a single conviction: that naming a force is most of the work of pushing back against it. Once you know what the Spotlight Effect is, you stop performing for an audience that isn't there. Once you can see the Sunk Cost Fallacy in your own decisions, the cost of staying loses the strange weight it used to have. Once Identity-Based Habits make sense, "trying harder" stops being the answer to anything important.
+      </p>
+
+      <p>
+        The books are designed, not laid out. Each chapter is short, edited carefully, and ends with an exercise you can actually do. The pages are written for someone who already reads a little psychology and has noticed that most of it is the same five ideas in different packaging — the work here is to go past those five and into the sixteen other ones that almost no one has named for you.
+      </p>
+
+      <p>
+        There is a free starter guide for anyone curious. There are three short volumes of essays — Being, Deciding, Relating — for the people who want the framework. And there is a twelve-week companion workbook, The Quiet Work, for the small subset who want to turn it into an actual change in their week.
+      </p>
+
+      <p>
+        The project is independent, written and designed by one person, and quietly built. There are no affiliate links, no upsells, no engagement loops. The books are sold once, downloaded as a PDF, and yours forever. The newsletter, when it goes out, is short and on Friday.
+      </p>
+
+      <div class="ab-rule"></div>
+
+      <p class="ab-coda">
+        If any of that sounds like the kind of thing you'd like more of, the books are below. The starter guide is free.
+      </p>
+    </div>
+
+    <footer class="ab-shelf-wrap">
+      <p class="eyebrow ab-shelf-label">The Books</p>
+      <div class="ab-shelf">
+        {fourVolumes.map(p => (
+          <a href={`${base}/${p.slug}`} class="ab-shelf-link">
+            <BookCover product={p} width={130} />
+            <span class="ab-shelf-meta">{p.volumeLabel}</span>
+          </a>
+        ))}
+      </div>
+      <div class="ab-shelf-actions">
+        <a href={`${base}/starter-guide`} class="ab-cta-secondary">Get the free starter guide</a>
+        <a href={`${base}/bundles`} class="ab-cta-primary">Browse the books →</a>
+      </div>
+    </footer>
+  </article>
+
 </Base>
+
+<style>
+  .ab {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 96px 32px 64px;
+  }
+  .ab-header {
+    margin-bottom: 56px;
+  }
+  .ab-h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(48px, 7vw, 88px);
+    line-height: 1.04;
+    letter-spacing: -0.015em;
+    margin-top: 18px;
+  }
+  .ab-h1 em { font-style: italic; color: var(--gold-dark); }
+
+  .ab-body p {
+    font-family: 'Fraunces', serif;
+    font-size: 19px;
+    line-height: 1.7;
+    color: var(--text-mid);
+    margin-bottom: 24px;
+  }
+  .ab-lead {
+    font-size: 24px !important;
+    color: var(--text) !important;
+    line-height: 1.5 !important;
+    font-style: italic;
+    margin-bottom: 32px !important;
+  }
+  .ab-rule {
+    width: 64px;
+    height: 1px;
+    background: var(--gold-dark);
+    margin: 48px 0;
+  }
+  .ab-coda {
+    font-style: italic;
+    color: var(--text-mid);
+  }
+
+  .ab-shelf-wrap {
+    margin-top: 80px;
+    padding-top: 56px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+  .ab-shelf-label { display: block; margin-bottom: 32px; }
+  .ab-shelf {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 28px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+  .ab-shelf-link {
+    text-decoration: none;
+    text-align: center;
+    transition: transform 350ms ease;
+  }
+  .ab-shelf-link:hover { transform: translateY(-4px); }
+  .ab-shelf-meta {
+    display: block;
+    margin-top: 14px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-mid);
+  }
+  .ab-shelf-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .ab-cta-secondary {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: var(--text-mid);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 4px;
+    transition: color 200ms ease, border-color 200ms ease;
+  }
+  .ab-cta-secondary:hover {
+    color: var(--gold-dark);
+    border-color: var(--gold-dark);
+  }
+  .ab-cta-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--text);
+    color: var(--cream);
+    padding: 14px 28px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 200ms ease, transform 200ms ease;
+  }
+  .ab-cta-primary:hover { background: #1a1a1a; transform: translateY(-1px); }
+</style>
