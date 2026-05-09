@@ -15,7 +15,7 @@ const {
 } = Astro.props;
 
 const fullTitle = title === site.brandName ? title : `${title} · ${site.brandName}`;
-const canonical = new URL(Astro.url.pathname, Astro.site ?? site.domain).toString();
+const canonical = `${site.domain}${Astro.url.pathname.replace(/^\/thequietforces/, '')}`;
 ---
 <!doctype html>
 <html lang="en">
