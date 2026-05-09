@@ -1,0 +1,12 @@
+---
+import Base from '../layouts/Base.astro';
+import PhaseOneShell from '../components/PhaseOneShell.astro';
+import { site } from '../data/catalog';
+---
+<Base title={site.brandName} description={site.tagline}>
+  <PhaseOneShell
+    pageLabel="Homepage"
+    headline="Seventeen forces shape a life."
+    blurb="A four-book project on the psychological forces quietly running most lives — and the practice of taking the wheel back."
+  />
+</Base>

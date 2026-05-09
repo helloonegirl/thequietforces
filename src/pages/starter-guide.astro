@@ -1,0 +1,13 @@
+---
+import Base from '../layouts/Base.astro';
+import PhaseOneShell from '../components/PhaseOneShell.astro';
+import { getProduct } from '../data/catalog';
+const p = getProduct('starter-guide');
+---
+<Base title={p.title} description={p.metaDescription}>
+  <PhaseOneShell
+    pageLabel="The Starter Guide"
+    headline="Five Quiet Forces That Shape Your Life."
+    blurb="A free 15-page guide. Five ideas that have been running your life without your permission — and one specific thing to do about each, this week."
+  />
+</Base>

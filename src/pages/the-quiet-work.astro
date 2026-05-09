@@ -1,0 +1,13 @@
+---
+import Base from '../layouts/Base.astro';
+import PhaseOneShell from '../components/PhaseOneShell.astro';
+import { getProduct } from '../data/catalog';
+const p = getProduct('the-quiet-work');
+---
+<Base title={`${p.volumeLabel} · ${p.title}`} description={p.metaDescription}>
+  <PhaseOneShell
+    pageLabel={`${p.volumeLabel} · ${p.theme}`}
+    headline="The Quiet Work."
+    blurb={p.longDescription}
+  />
+</Base>

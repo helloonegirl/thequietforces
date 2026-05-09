@@ -1,0 +1,188 @@
+{
+  "_README": "Edit this file to add products, change prices, or update copy. Save → GitHub Action rebuilds the live site in ~90 seconds. See README.md.",
+
+  "site": {
+    "brandName": "The Quiet Forces",
+    "tagline": "Seventeen forces shape a life.",
+    "domain": "https://helloonegirl.github.io/thequietforces"
+  },
+
+  "launchPromo": {
+    "active": false,
+    "discountPercent": 20,
+    "label": "Launch Edition · 30 Days Only",
+    "endsOn": "2026-06-30"
+  },
+
+  "products": [
+    {
+      "slug": "starter-guide",
+      "volumeLabel": "Free Starter",
+      "title": "Five Quiet Forces That Shape Your Life",
+      "theme": null,
+      "pageCount": 15,
+      "isFree": true,
+      "price": null,
+      "tagline": "A free 15-page guide.",
+      "shortDescription": "Five ideas that have been running your life without your permission — and one specific thing to do about each.",
+      "longDescription": "Five concepts compressed into a single sitting. The Spotlight Effect, Identity-Based Habits, the Sunk Cost Fallacy, the Fundamental Attribution Error, and the practice of looking foolish on purpose — each with one exercise to try this week.",
+      "forces": [
+        { "name": "The Spotlight Effect", "tagline": "The exhausting illusion that everyone is looking at you." },
+        { "name": "Identity-Based Habits", "tagline": "Why changing who you believe you are changes everything downstream." },
+        { "name": "The Sunk Cost Fallacy", "tagline": "Why the cost of staying is hidden in plain sight." },
+        { "name": "The Fundamental Attribution Error", "tagline": "Why their behavior is character and yours is circumstance." },
+        { "name": "Look Foolish on Purpose", "tagline": "The practice of doing the thing before you are ready." }
+      ],
+      "pullQuote": null,
+      "coverImage": null,
+      "accentGradient": ["#1a1a1a", "#2b2a26"],
+      "payhipUrl": null,
+      "comingSoon": false,
+      "continueWith": ["volume-one"],
+      "metaDescription": "A free 15-page PDF on five psychological forces quietly shaping your life — and one specific exercise for each.",
+      "ogImage": null
+    },
+    {
+      "slug": "volume-one",
+      "volumeLabel": "Volume I",
+      "title": "The Quiet Forces",
+      "theme": "Being",
+      "pageCount": 91,
+      "isFree": false,
+      "price": 9.99,
+      "tagline": "Seven forces shaping how you move through your own life.",
+      "shortDescription": "The opening volume — the foundational forces that shape how you see yourself, and the small moves that begin to change them.",
+      "longDescription": "Seven psychological forces quietly running the way you live with yourself — from the Butterfly Effect that magnifies the smallest moves, to the Pareto Principle that hides where the real work is. Each force gets its origin story, its research, its examples, and a counter-move you can try this week.",
+      "forces": [
+        { "name": "The Butterfly Effect", "tagline": "Why the smallest moves are usually the ones doing the real work." },
+        { "name": "Crab Mentality", "tagline": "The oldest form of sabotage — and the one most likely to come from people who love you." },
+        { "name": "The Spotlight Effect", "tagline": "The exhausting illusion that everyone is looking at you." },
+        { "name": "The Arrival Fallacy", "tagline": "The quiet disappointment of getting what you wanted." },
+        { "name": "Identity-Based Habits", "tagline": "Why changing who you believe you are changes everything downstream." },
+        { "name": "The Lindy Effect", "tagline": "Why the oldest ideas are usually the most trustworthy." },
+        { "name": "The Pareto Principle", "tagline": "Most of your life is being produced by a small fraction of your life." }
+      ],
+      "pullQuote": "You cannot fight what you cannot name. But once you name it, it begins to lose.",
+      "coverImage": null,
+      "accentGradient": ["#1a2332", "#2c3e5a"],
+      "payhipUrl": null,
+      "comingSoon": false,
+      "continueWith": ["volume-two", "complete-change-kit"],
+      "metaDescription": "Volume I of The Quiet Forces — a 91-page workbook on seven psychological forces shaping how you live with yourself.",
+      "ogImage": null
+    },
+    {
+      "slug": "volume-two",
+      "volumeLabel": "Volume II",
+      "title": "The Quiet Forces",
+      "theme": "Deciding",
+      "pageCount": 67,
+      "isFree": false,
+      "price": 9.99,
+      "tagline": "Five cognitive biases distorting your judgment.",
+      "shortDescription": "The next set of forces — the ones quietly shaping the way you decide what's worth chasing and what's worth quitting.",
+      "longDescription": "Five cognitive biases that quietly hijack your thinking, from the Dunning-Kruger overconfidence trap to the Sunk Cost Fallacy that keeps you in the wrong room. Each chapter is a short field guide to one bias and the specific moves that loosen its grip.",
+      "forces": [
+        { "name": "The Dunning-Kruger Effect", "tagline": "Why the people who know least are the most certain." },
+        { "name": "Parkinson's Law", "tagline": "Why the work always expands to fill the time you give it." },
+        { "name": "Loss Aversion", "tagline": "Why losing $100 hurts more than gaining $100 helps." },
+        { "name": "Survivorship Bias", "tagline": "Why the lessons of the winners are usually the wrong lessons." },
+        { "name": "The Sunk Cost Fallacy", "tagline": "Why the cost of staying is hidden in plain sight." }
+      ],
+      "pullQuote": null,
+      "coverImage": null,
+      "accentGradient": ["#2a1a1a", "#5a2c2c"],
+      "payhipUrl": null,
+      "comingSoon": false,
+      "continueWith": ["volume-three", "twelve-force-bundle"],
+      "metaDescription": "Volume II of The Quiet Forces — a 67-page workbook on five cognitive biases distorting your judgment.",
+      "ogImage": null
+    },
+    {
+      "slug": "volume-three",
+      "volumeLabel": "Volume III",
+      "title": "The Quiet Forces",
+      "theme": "Relating",
+      "pageCount": 68,
+      "isFree": false,
+      "price": 9.99,
+      "tagline": "Five social forces shaping how you see other people.",
+      "shortDescription": "The closing volume of the trilogy — the forces that govern how you read other people, and how they read you.",
+      "longDescription": "Five social forces that decide who you trust, what you copy, and what you mistake for character. From the Fundamental Attribution Error to the Halo Effect, each chapter explains the force, the research behind it, and a specific way to push back this week.",
+      "forces": [
+        { "name": "The Fundamental Attribution Error", "tagline": "Why their behavior is character and yours is circumstance." },
+        { "name": "Social Proof", "tagline": "Why the crowd is the most persuasive argument no one has made." },
+        { "name": "The Overton Window", "tagline": "Why what feels normal today was unthinkable a decade ago." },
+        { "name": "Reciprocity", "tagline": "Why the smallest gift creates the largest obligation." },
+        { "name": "The Halo Effect", "tagline": "Why one good trait persuades you of every other good trait." }
+      ],
+      "pullQuote": null,
+      "coverImage": null,
+      "accentGradient": ["#0f2418", "#1e4330"],
+      "payhipUrl": null,
+      "comingSoon": false,
+      "continueWith": ["the-quiet-work", "seventeen-force-bundle"],
+      "metaDescription": "Volume III of The Quiet Forces — a 68-page workbook on five social forces shaping how you see other people.",
+      "ogImage": null
+    },
+    {
+      "slug": "the-quiet-work",
+      "volumeLabel": "Volume IV · Companion Workbook",
+      "title": "The Quiet Work",
+      "theme": "Doing",
+      "pageCount": 110,
+      "isFree": false,
+      "price": 14.99,
+      "tagline": "A twelve-week guided practice. The companion to the trilogy.",
+      "shortDescription": "Eighty-four daily prompts across four phases — The Mirror, The Edit, The Build, The Integration — that turn the ideas into a real change in your week.",
+      "longDescription": "A twelve-week guided practice workbook designed as the companion to the trilogy. Four phases — The Mirror, The Edit, The Build, The Integration — broken into eighty-four daily prompts with write-in space. The book the trilogy was always pointing at.",
+      "forces": [
+        { "name": "The Mirror", "tagline": "Three weeks of seeing yourself as you actually are." },
+        { "name": "The Edit", "tagline": "Three weeks of subtracting what isn't yours." },
+        { "name": "The Build", "tagline": "Three weeks of adding what is." },
+        { "name": "The Integration", "tagline": "Three weeks of making the change unconscious." }
+      ],
+      "pullQuote": null,
+      "coverImage": null,
+      "accentGradient": ["#3a1a12", "#6b2c1e"],
+      "payhipUrl": null,
+      "comingSoon": false,
+      "continueWith": ["complete-change-kit"],
+      "metaDescription": "The Quiet Work — a 110-page twelve-week guided practice workbook. Eighty-four daily prompts that turn the ideas into a change you can feel.",
+      "ogImage": null
+    }
+  ],
+
+  "bundles": [
+    {
+      "slug": "twelve-force-bundle",
+      "title": "The Twelve-Force Bundle",
+      "subtitle": "Volumes I and II — twelve forces, one read.",
+      "includes": ["volume-one", "volume-two"],
+      "bundlePrice": 14.99,
+      "payhipUrl": null,
+      "isFlagship": false,
+      "comingSoon": false
+    },
+    {
+      "slug": "seventeen-force-bundle",
+      "title": "The Seventeen-Force Bundle",
+      "subtitle": "The full trilogy — seventeen forces across Being, Deciding, Relating.",
+      "includes": ["volume-one", "volume-two", "volume-three"],
+      "bundlePrice": 19.99,
+      "payhipUrl": null,
+      "isFlagship": false,
+      "comingSoon": false
+    },
+    {
+      "slug": "complete-change-kit",
+      "title": "The Complete Change Kit",
+      "subtitle": "All four books. Eighty-four days. One coherent project.",
+      "includes": ["volume-one", "volume-two", "volume-three", "the-quiet-work"],
+      "bundlePrice": 29.99,
+      "payhipUrl": null,
+      "isFlagship": true,
+      "comingSoon": false
+    }
+  ]
+}
